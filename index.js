@@ -3,10 +3,10 @@ const app = express();
 const port = 3000;
 
 const movies = [
-  { title: 'Jaws', year: 1975, rating: 8 },
-  { title: 'Avatar', year: 2009, rating: 7.8 },
-  { title: 'Brazil', year: 1985, rating: 8 },
-  { title: 'الإرهاب والكباب', year: 1992, rating: 6.2 }
+  { id: 1, title: 'Jaws', year: 1975, rating: 8 },
+  { id: 2, title: 'Avatar', year: 2009, rating: 7.8 },
+  { id: 3, title: 'Brazil', year: 1985, rating: 8 },
+  { id: 4, title: 'الإرهاب والكباب', year: 1992, rating: 6.2 }
 ]
 app.get("/test", (req, res) => {
   res.json({ status: 200, message: 'ok' });
@@ -66,6 +66,16 @@ app.get('/movies/read/by-title', (req, res) => {
     return 0;
   });
   res.json({ status: 200, data: sortedMovies });
+});
+
+app.get('/movies/read/id/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const movie = movies.find((m) => m.id === id);
+  if (movie) {
+    res.json({ status: 200, data: movie });
+  } else {
+    res.status(404).json({ status: 404, error: true, message: `the movie ${id} does not exist` });
+  }
 });
 
 
