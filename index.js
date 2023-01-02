@@ -37,13 +37,43 @@ app.get(`/search`, (req, res) => {
 
 });
 
+app.get(`/movies/read`, (req, res) => {
+  res.json({ status: 200, data: movies });
+});
+
+app.get('/movies/read/by-date', (req, res) => {
+  const sortedMovies = movies.sort((a, b) => {
+    return new Date(a.year) - new Date(b.year);
+  });
+  res.json({ status: 200, data: sortedMovies });
+});
+
+app.get('/movies/read/by-rating', (req, res) => {
+  const sortedMovies = movies.sort((a, b) => {
+    return b.rating - a.rating;
+  });
+  res.json({ status: 200, data: sortedMovies });
+});
+
+app.get('/movies/read/by-title', (req, res) => {
+  const sortedMovies = movies.sort((a, b) => {
+    if (a.title < b.title) {
+      return -1;
+    }
+    if (a.title > b.title) {
+      return 1;
+    }
+    return 0;
+  });
+  res.json({ status: 200, data: sortedMovies });
+});
+
+
 app.post(`/movies/create`, (req, res) => {
   res.json({ status: 200, message: "create ok" })
 });
 
-app.get(`/movies/read`, (req, res) => {
-  res.json({ status: 200, data: movies });
-});
+
 app.put(`/movies/update`, (req, res) => {
   res.json({ status: 200, message: "update ok" });
 
