@@ -88,9 +88,15 @@ app.put(`/movies/update`, (req, res) => {
   res.json({ status: 200, message: "update ok" });
 
 });
-app.delete(`/movies/delete`, (req, res) => {
-  res.json({ status: 200, message: "delete ok" });
-
+app.get(`/movies/delete/:id`, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const movieId = movies.findIndex((x) => x.id === id);
+  if (movieId !== -1) {
+    movies.splice(movieId, 1);
+    res.json({ status: 200, data: movies })
+  } else {
+    res.status(404).json({ status: 404, error: true, message: `the movie ${id} dose not exist.` })
+  }
 });
 
 app.get('/movies/add', (req, res) => {
@@ -99,10 +105,11 @@ app.get('/movies/add', (req, res) => {
   const rating = req.query.rating || 4;
   if (!title || !year || year.length < 4) {
     res.status(403).send({ status: 403, error: true, message: 'you cannot create a movie without providing a title and a year' })
+  } else {
+    const NewData = { title, year, rating };
+    movies.push(NewData)
+    res.json({ status: 200, data: movies });
   }
-  const NewData = { title, year, rating };
-  movies.push(NewData)
-  res.json({ status: 200, data: movies });
 })
 
 app.get(`/movies/get`, (req, res) => {
@@ -110,6 +117,7 @@ app.get(`/movies/get`, (req, res) => {
 
 
 });
+
 app.put(`/movies/edit`, (req, res) => {
 
 });
