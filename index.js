@@ -78,27 +78,6 @@ app.get('/movies/read/id/:id', (req, res) => {
   }
 });
 
-
-app.post(`/movies/create`, (req, res) => {
-  res.json({ status: 200, message: "create ok" })
-});
-
-
-app.put(`/movies/update`, (req, res) => {
-  res.json({ status: 200, message: "update ok" });
-
-});
-app.get(`/movies/delete/:id`, (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const movieId = movies.findIndex((x) => x.id === id);
-  if (movieId !== -1) {
-    movies.splice(movieId, 1);
-    res.json({ status: 200, data: movies })
-  } else {
-    res.status(404).json({ status: 404, error: true, message: `the movie ${id} dose not exist.` })
-  }
-});
-
 app.get('/movies/add', (req, res) => {
   const title = req.query.title;
   const year = req.query.year;
@@ -111,6 +90,33 @@ app.get('/movies/add', (req, res) => {
     res.json({ status: 200, data: movies });
   }
 })
+
+
+app.get(`/movies/delete/:id`, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const movieId = movies.findIndex((x) => x.id === id);
+  if (movieId !== -1) {
+    movies.splice(movieId, 1);
+    res.json({ status: 200, data: movies })
+  } else {
+    res.status(404).json({ status: 404, error: true, message: `the movie ${id} dose not exist.` })
+  }
+});
+
+
+
+app.post(`/movies/create`, (req, res) => {
+  res.json({ status: 200, message: "create ok" })
+});
+
+
+
+app.put(`/movies/update`, (req, res) => {
+
+});
+
+
+
 
 app.get(`/movies/get`, (req, res) => {
   res.json({ status: 200, message: "get ok" })
