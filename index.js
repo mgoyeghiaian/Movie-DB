@@ -93,11 +93,18 @@ app.delete(`/movies/delete`, (req, res) => {
 
 });
 
-app.post(`/movies/add`, (req, res) => {
-  res.json({ status: 200, message: "add ok" })
+app.get('/movies/add', (req, res) => {
+  const title = req.query.title;
+  const year = req.query.year;
+  const rating = req.query.rating || 4;
+  if (!title || !year || year.length < 4) {
+    res.status(403).send({ status: 403, error: true, message: 'you cannot create a movie without providing a title and a year' })
+  }
+  const NewData = { title, year, rating };
+  movies.push(NewData)
+  res.json({ status: 200, data: movies });
+})
 
-
-});
 app.get(`/movies/get`, (req, res) => {
   res.json({ status: 200, message: "get ok" })
 
