@@ -111,9 +111,29 @@ app.post(`/movies/create`, (req, res) => {
 
 
 
-app.put(`/movies/update`, (req, res) => {
+app.get(`/movies/update/:id`, (req, res) => {
 
+  const id = parseInt(req.params.id, 10);
+  const movieId = movies.findIndex((x) => x.id === id);
+  if (movieId !== -1) {
+    const movie = movies[movieId];
+    if (req.query.title) {
+      movie.title = req.query.title;
+    }
+    if (req.query.rating) {
+      movie.rating = req.query.rating;
+    }
+    if (req.query.year) {
+      movie.year = req.query.year;
+    }
+    res.json({ status: 200, data: movies });
+  } else {
+    res.status(404).json({ status: 404, error: true, message: `the movie ${id} does not exist` });
+  }
 });
+
+
+
 
 
 
